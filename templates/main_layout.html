@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- STYLES CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+        <!-- BOX ICONS CSS-->
+        <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+        <title>Tell - Us</title>
+    </head>
+    <body id="body">
+        <div class="l-navbar" id="navbar">
+            <nav class="nav">
+                <div>
+                    <a href="{{ url_for('index') }}" class="nav__logo">
+                        <img src="{{ url_for('static', filename='icons/tellus.png') }}" alt="" class="nav__logo-icon">
+                        <span class="nav__logo-text">Text Clustering</span>
+                    </a>
+
+                    <div class="nav__toggle" id="nav-toggle">
+                        <i class='bx bx-chevron-left'></i>
+                    </div>
+    
+                    <ul class="nav__list">
+                        <a href="{{ url_for('index') }}" class="nav__link active">
+                            <i class='bx bx-home nav__icon'></i>
+                            <span class="nav__text">Beranda</span>
+                        </a>
+                        <a href="{{ url_for('review') }}" class="nav__link">
+                            <i class='bx bx-message-edit nav__icon' ></i>
+                            <span class="nav__text">Data Ulasan</span>
+                        </a>
+                        <a href="{{ url_for('stopword') }}" class="nav__link">
+                            <i class='bx bx-message-alt-x nav__icon' ></i>
+                            <span class="nav__text">Data Stopword</span>
+                        </a>
+                        <a href="{{ url_for('normalization') }}" class="nav__link">
+                            <i class='bx bx-message-alt-check nav__icon'></i>
+                            <span class="nav__text">Data Normalisasi</span>
+                        </a>
+                        <a href="{{ url_for('clean') }}" class="nav__link">
+                            <i class='bx bx-table nav__icon'></i>
+                            <span class="nav__text">Data Bersih</span>
+                        </a>
+                        <a href="{{ url_for('clustering') }}" class="nav__link">
+                            <i class='bx bx-line-chart nav__icon' ></i>
+                            <span class="nav__text">Klasterisasi</span>
+                        </a>                 
+                    </ul>
+                </div>
+                <a href="#" class="nav__link">           
+                    <i class='bx bx-log-out-circle nav__icon'></i>
+                    <span class="nav__text">Keluar</span>
+                </a>
+            </nav>
+        </div>
+        
+        <main role="" class="">
+            <div class="">
+                <div class="">
+                    <!-- FLASH -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}"> {{ message }} </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </main>
+    
+    </body>
+    <!-- MAIN JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</html>

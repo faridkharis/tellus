@@ -1,0 +1,24 @@
+{% extends "main_layout.html" %}
+{% block content %}
+
+<div>
+    <div class="top">
+        <span class="top-text">Beranda</span>
+    </div>
+
+    <div class="main__content main__content-home">
+        <h1>Text Clustering</h1>
+        <p>
+            <i>Text Clustering</i> merupakan pengelompokkan teks ke dalam beberapa kelompok berdasarkan kemiripan teks tersebut.
+            Teks yang menjadi objek aplikasi ini adalah teks ulasan aplikasi startup yang diperoleh dari website <i>Google Playstore</i>.
+        </p>
+        <div class="button">
+            <a href="{{ url_for('review') }}" class="button-start">Mulai</a>
+        </div>
+        
+    </div>
+    
+
+</div>
+
+{% endblock %}

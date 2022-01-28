@@ -1,0 +1,43 @@
+{% extends "main_layout.html" %}
+{% block content %}
+
+<div>
+    <div class="top">
+        <span class="top-text">Data Ulasan</span>
+    </div>
+
+    <div class="main__content">
+        <!-- Button -->
+        <div class="button">
+            <a href="#" class="button-upload">Upload</a>
+        </div>
+
+        <br><br>
+        <!-- Table -->
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <td>No</td>
+                        <td>Nama</td>
+                    </tr>
+                </thead>   
+                <tbody>   
+                    {% for row in computers %}
+                    <tr>
+                        <td>{{ row.0 }}</td>
+                        <td>{{ row.1 }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="2">Unbelievable. No entries here so far</td>
+                    </tr>
+                   {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</div>
+
+{% endblock %}
