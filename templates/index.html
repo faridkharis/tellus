@@ -1,17 +1,23 @@
 {% extends "main_layout.html" %}
 {% block content %}
 
-<div>
+<div class="main__content">
     <div class="top">
         <span class="top-text">Beranda</span>
     </div>
 
     <div class="main__content main__content-home">
-        <h1>Text Clustering</h1>
+        <h1 class="home__title">Tell - Us</h1>
         <p>
+            Tell-Us merupakan aplikasi berbasis web yang menerapkan Algoritma K-Means Clustering untuk melakukan <i>text xlustering</i>.
             <i>Text Clustering</i> merupakan pengelompokkan teks ke dalam beberapa kelompok berdasarkan kemiripan teks tersebut.
             Teks yang menjadi objek aplikasi ini adalah teks ulasan aplikasi startup yang diperoleh dari website <i>Google Playstore</i>.
         </p>
+        <p>Tahapan penggunaan Tell-Us adalah sebagai berikut :</p>
+        <p>1. Upload file yang berisi ulasan dari Google Play dengan format .csv
+        <br>2. Upload file stopword
+        <br>3. Upload file normalisasi
+        <br>4. Tekan tombol "Klasterisasi"</p>
         <div class="button">
             <a href="{{ url_for('review') }}" class="button-start">Mulai</a>
         </div>

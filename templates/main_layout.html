@@ -1,62 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+    <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- STYLES CSS -->
+
+        <!--========== BOX ICONS ==========-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+        <!--========== CSS ==========-->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
-        <!-- BOX ICONS CSS-->
-        <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
         <title>Tell - Us</title>
     </head>
-    <body id="body">
-        <div class="l-navbar" id="navbar">
-            <nav class="nav">
-                <div>
-                    <a href="{{ url_for('index') }}" class="nav__logo">
-                        <img src="{{ url_for('static', filename='icons/tellus.png') }}" alt="" class="nav__logo-icon">
-                        <span class="nav__logo-text">Text Clustering</span>
-                    </a>
+    <body>
+        <!--========== HEADER ==========-->
+        <header class="header">
+            <div class="header__container">
+                <img src="{{ url_for('static', filename='img/user-circle-solid-24.png') }}" alt="" class="header__img">
 
-                    <div class="nav__toggle" id="nav-toggle">
-                        <i class='bx bx-chevron-left'></i>
-                    </div>
+                <a href="#" class="header__logo">Tell - Us</a>
     
-                    <ul class="nav__list">
-                        <a href="{{ url_for('index') }}" class="nav__link active">
-                            <i class='bx bx-home nav__icon'></i>
-                            <span class="nav__text">Beranda</span>
-                        </a>
-                        <a href="{{ url_for('review') }}" class="nav__link">
-                            <i class='bx bx-message-edit nav__icon' ></i>
-                            <span class="nav__text">Data Ulasan</span>
-                        </a>
-                        <a href="{{ url_for('stopword') }}" class="nav__link">
-                            <i class='bx bx-message-alt-x nav__icon' ></i>
-                            <span class="nav__text">Data Stopword</span>
-                        </a>
-                        <a href="{{ url_for('normalization') }}" class="nav__link">
-                            <i class='bx bx-message-alt-check nav__icon'></i>
-                            <span class="nav__text">Data Normalisasi</span>
-                        </a>
-                        <a href="{{ url_for('clean') }}" class="nav__link">
-                            <i class='bx bx-table nav__icon'></i>
-                            <span class="nav__text">Data Bersih</span>
-                        </a>
-                        <a href="{{ url_for('clustering') }}" class="nav__link">
-                            <i class='bx bx-line-chart nav__icon' ></i>
-                            <span class="nav__text">Klasterisasi</span>
-                        </a>                 
-                    </ul>
+                <div class="header__search">
+                    <input type="search" placeholder="Search" class="header__input">
+                    <i class='bx bx-search header__icon'></i>
                 </div>
-                <a href="#" class="nav__link">           
-                    <i class='bx bx-log-out-circle nav__icon'></i>
-                    <span class="nav__text">Keluar</span>
+    
+                <div class="header__toggle">
+                    <i class='bx bx-menu' id="header-toggle"></i>
+                </div>
+            </div>
+        </header>
+
+        <!--========== NAV ==========-->
+        <div class="nav" id="navbar">
+            <nav class="nav__container">
+                <div>
+                    <a href="#" class="nav__link nav__logo">
+                        <i class='bx bxs-user-voice nav__icon' ></i>
+                        <span class="nav__logo-name">Tell - Us</span>
+                    </a>
+    
+                    <div class="nav__list">
+                        <div class="nav__items">
+                            <h3 class="nav__subtitle">Menu</h3>
+    
+                            <a href="{{ url_for('index') }}" class="nav__link">
+                                <i class='bx bx-home nav__icon' ></i>
+                                <span class="nav__name">Beranda</span>
+                            </a>
+
+                            <a href="{{ url_for('review') }}" class="nav__link">
+                                <i class='bx bx-message-edit nav__icon' ></i>
+                                <span class="nav__name">Data Ulasan</span>
+                            </a>
+
+                            <a href="{{ url_for('stopword') }}" class="nav__link">
+                                <i class='bx bx-message-alt-x nav__icon' ></i>
+                                <span class="nav__name">Data Stopword</span>
+                            </a>
+
+                            <a href="{{ url_for('normalization') }}" class="nav__link">
+                                <i class='bx bx-message-alt-error nav__icon' ></i>
+                                <span class="nav__name">Data Normalisasi</span>
+                            </a>
+
+                            <a href="{{ url_for('clean') }}" class="nav__link">
+                                <i class='bx bx-message-alt-check nav__icon' ></i>
+                                <span class="nav__name">Data Bersih</span>
+                            </a>
+
+                            <a href="{{ url_for('clustering') }}" class="nav__link">
+                                <i class='bx bx-line-chart nav__icon' ></i>
+                                <span class="nav__name">Klasterisasi</span>
+                            </a>
+                        </div>
+    
+                    </div>
+                </div>
+
+                <a href="#" class="nav__link nav__logout">
+                    <i class='bx bx-log-out nav__icon' ></i>
+                    <span class="nav__name">Log Out</span>
                 </a>
             </nav>
         </div>
-        
+
+        <!--========== CONTENTS ==========-->
         <main role="" class="">
             <div class="">
                 <div class="">
@@ -72,8 +101,8 @@
                 </div>
             </div>
         </main>
-    
+
+        <!--========== MAIN JS ==========-->
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     </body>
-    <!-- MAIN JS -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </html>
