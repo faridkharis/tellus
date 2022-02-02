@@ -10,6 +10,8 @@
         <!--========== CSS ==========-->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
+        <link rel="icon" href="{{ url_for('static', filename='img/user-voice-solid-24.png') }}">
+
         <title>Tell - Us</title>
     </head>
     <body>
@@ -49,9 +51,9 @@
                                 <span class="nav__name">Beranda</span>
                             </a>
 
-                            <a href="{{ url_for('review') }}" class="nav__link">
+                            <a href="{{ url_for('scraping') }}" class="nav__link">
                                 <i class='bx bx-message-edit nav__icon' ></i>
-                                <span class="nav__name">Data Ulasan</span>
+                                <span class="nav__name">Scraping Data Ulasan</span>
                             </a>
 
                             <a href="{{ url_for('stopword') }}" class="nav__link">
@@ -78,7 +80,7 @@
                     </div>
                 </div>
 
-                <a href="#" class="nav__link nav__logout">
+                <a href="{{ url_for('logout') }}" class="nav__link nav__logout">
                     <i class='bx bx-log-out nav__icon' ></i>
                     <span class="nav__name">Log Out</span>
                 </a>

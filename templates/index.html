@@ -1,30 +1,43 @@
-{% extends "main_layout.html" %}
-{% block content %}
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<div class="main__content">
-    <div class="top">
-        <span class="top-text">Beranda</span>
-    </div>
+        <!--========== BOX ICONS ==========-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 
-    <div class="main__content main__content-home">
-        <h1 class="home__title">Tell - Us</h1>
-        <p>
-            Tell-Us merupakan aplikasi berbasis web yang menerapkan Algoritma K-Means Clustering untuk melakukan <i>text xlustering</i>.
-            <i>Text Clustering</i> merupakan pengelompokkan teks ke dalam beberapa kelompok berdasarkan kemiripan teks tersebut.
-            Teks yang menjadi objek aplikasi ini adalah teks ulasan aplikasi startup yang diperoleh dari website <i>Google Playstore</i>.
-        </p>
-        <p>Tahapan penggunaan Tell-Us adalah sebagai berikut :</p>
-        <p>1. Upload file yang berisi ulasan dari Google Play dengan format .csv
-        <br>2. Upload file stopword
-        <br>3. Upload file normalisasi
-        <br>4. Tekan tombol "Klasterisasi"</p>
-        <div class="button">
-            <a href="{{ url_for('review') }}" class="button-start">Mulai</a>
-        </div>
+        <!--========== CSS ==========-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+        <link rel="icon" href="{{ url_for('static', filename='img/user-voice-solid-24.png') }}">
+
+        <title>Tell - Us</title>
+    </head>
+    <body>
         
-    </div>
-    
 
-</div>
+        <!-- LOGIN FORM -->
+        <div class="">
+            <div class="login-center">
+                <div class="home__title-icon">
+                    <i class='bx bxs-user-voice home__title-icon'></i>
+                </div>
+                <h1 class="home__title">Tell - Us</h1>
+                <form action="" method="post">
+                    <div class="input-login">
+                        <input type="" name="username" class="form-login" placeholder="Username">
+                        <input type="password" class="form-login" name="password" placeholder="Password">
+                    </div>
+                    
 
-{% endblock %}
+                    <button type="submit" class="button button-login">Login</button>
+                </form>
+            </div>
+        </div>
+
+
+        <!--========== MAIN JS ==========-->
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    </body>
+</html>

@@ -1,0 +1,70 @@
+{% extends "main_layout.html" %}
+{% block content %}
+
+<div>
+    <div class="top">
+        <span class="top-text">Beranda</span>
+    </div>
+
+    <div class="main__content">
+        <div class="main__content-content">
+
+            <div class="home__title-icon">
+                <i class='bx bxs-user-voice home__title-icon'></i>
+            </div>
+            <h2 class="home__title">Tell - Us</h2>
+            <p>
+                Tell-Us merupakan aplikasi berbasis web yang menerapkan Algoritma K-Means Clustering untuk melakukan <i>text clustering</i>.
+                <i>Text Clustering</i> merupakan pengelompokkan teks ke dalam beberapa kelompok berdasarkan kemiripan teks tersebut.
+                Teks yang menjadi objek aplikasi ini adalah teks ulasan aplikasi startup yang diperoleh dari website <i>Google Playstore</i>.
+            </p>
+            <p>Langkah-langkah penggunaan Tell-Us adalah sebagai berikut :</p>
+            <table>
+                <tbody class="table-instructions">
+                    <tr>
+                        <td class="td-number">1</td>
+                        <td>
+                            Masukkan id url dari suatu aplikasi di Google Play Store. <br>
+                            (contoh : <b>id.kulina.app</b> dari <i>https://play.google.com/store/apps/details?id=<b></b>id.kulina.app</b>&hl=en&gl=US</i>) <br>
+                            Atau upload file yang berisi ulasan dari Google Play dengan format .csv. <br>
+                            (contoh : )
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>
+                            Setelah data muncul pada tabel, selanjutnya klik tombol <b>"Bersihkan"</b> 
+                            yang berada dibawah tabel untuk melakukan <i>text preprocessing</i>.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>
+                            Setelah pembersihan data berhasil dan data bersih telah ditampilkan, 
+                            selanjutnya klik tombol <b>"Klasterisasi"</b> yang berada dibawah tabel 
+                            untuk memulai proses klasterisasi.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>
+                            Kemudian akan ditampilkan hasil klasterisasi dari data yang telah diproses.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+                
+            <br>
+            
+            <div class="button-start">
+                <a href="{{ url_for('scraping') }}" class="button">Mulai</a>
+            </div>
+            
+        </div>
+
+    </div>
+    
+
+</div>
+
+{% endblock %}
