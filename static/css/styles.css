@@ -304,15 +304,6 @@ img {
   margin: 2rem;
 }
 
-.table-instructions {
-  vertical-align: top;
-}
-
-.td-number {
-  width: 2rem;
-}
-
-
 .button {
   background: var(--first-color);
   color: var(--container-color);
@@ -374,4 +365,18 @@ img {
   font-family: var(--body-font);
   margin-top: 1rem;
   display: block;
+}
+
+.teble-review {
+  border: none;
+}
+
+table {
+  border: none;
+  font-size: var(--smaller-font-size);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* table-layout: fixed; */
+  width: 50px;
 }

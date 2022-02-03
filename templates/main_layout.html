@@ -10,6 +10,9 @@
         <!--========== CSS ==========-->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
+        <!--========== DATATABLES ==========-->
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.css"/>
+
         <link rel="icon" href="{{ url_for('static', filename='img/user-voice-solid-24.png') }}">
 
         <title>Tell - Us</title>
@@ -106,5 +109,13 @@
 
         <!--========== MAIN JS ==========-->
         <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <!--========== DATATABLES ==========-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('.empTable').DataTable();
+            });
+        </script>
     </body>
 </html>

@@ -5,6 +5,27 @@
     <div class="top">
         <span class="top-text">Data Bersih</span>
     </div>
+
+    <div class="main__content">
+        <div class="main__content-content">
+            <h3>Data Bersih</h3> 
+            <br>
+            
+            {% for table in tables %}
+                {{titles[loop.index]}}
+                {{ table|safe }}
+            {% endfor %}
+
+            <br><br>
+
+            <div class="">
+                <a href="{{ url_for('scraping') }}" class="button" style="float: left;">Sebelumnya</a>
+                <a href="{{ url_for('clustering') }}" class="button" style="float: right;">Selanjutnya</a>
+            </div>
+            
+        </div>
+    </div>
+
 </div>
 
 {% endblock %}
