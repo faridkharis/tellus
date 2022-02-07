@@ -292,11 +292,15 @@ img {
   margin-bottom: -4rem;
 }
 
+.top__content {
+  float: right;
+}
+
 .main__content {
   position: absolute;
   width: 90%;
   background-color: var(--container-color);
-  margin: 1rem 0 0 0;
+  margin: 2rem 0 0 0;
   filter: drop-shadow(0 0 .5rem #a09fa3);
 }
 
@@ -380,3 +384,4 @@ table {
   /* table-layout: fixed; */
   width: 50px;
 }
+

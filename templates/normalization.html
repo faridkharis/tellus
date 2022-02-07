@@ -2,8 +2,24 @@
 {% block content %}
 
 <div>
-    <div class="top">
-        <span class="top-text">Data Normalisasi</span>
+    <div class="top__content">
+        <span class="">Data Normalisasi</span>
+    </div>
+    <div class="main__content">
+        <div class="main__content-content">
+            <h3>Data Ulasan</h3> 
+            <br>
+            
+            {{ slang_word }}
+
+            <br><br>
+
+            <div class="">
+                <a href="{{ url_for('scraping') }}" class="button" style="float: left;">Sebelumnya</a>
+                <a href="{{ url_for('clean') }}" class="button" style="float: right;">Selanjutnya</a>
+            </div>
+            
+        </div>
     </div>
 </div>
 
