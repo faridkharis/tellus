@@ -13,6 +13,7 @@ from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.cluster import KMeans
+# from wordcloud import WordCloud, STOPWORDS
 
 
 app = Flask(__name__)
@@ -62,7 +63,6 @@ def scraping():
             df = df[['userName', 'at', 'content', 'score', 'reviewCreatedVersion']]
 
             data.df = df
-            # session["df"] = df
 
             return render_template("review.html", tables=[df.to_html(classes='empTable display dataTable table-review')], titles=df.columns.values)
         else:
@@ -81,14 +81,16 @@ def review():
 @app.route("/stopword")
 def stopword():
     if "username" in session:
-        return render_template("stopword.html")
+        with open('static/files/stop_word.txt', 'r') as f:
+            return render_template("stopword.html", text=f.read())
     else:
         return redirect(url_for("index"))
 
 @app.route("/normalization")
 def normalization():
     if "username" in session:
-        return render_template("normalization.html")
+        with open('static/files/slang_word.csv', 'r') as f:
+            return render_template("normalization.html", slang_word=f.read())
     else:
         return redirect(url_for("index"))
 
@@ -150,7 +152,6 @@ def clean():
             clean_reviews.append(stem)
         
         clean_data1 = pd.DataFrame(clean_reviews, columns=['clean_text'])
-        # clean_data1.head()
 
         clean_data1['userName'] = df['userName']
         clean_data1['at'] = df['at']
@@ -158,13 +159,11 @@ def clean():
         clean_data1['reviewCreatedVersion'] = df['reviewCreatedVersion']
         
         clean_data2 = clean_data1.dropna()
-        print(clean_data2.shape)
-        # clean_data2.head()
+        # print(clean_data2.shape)
 
+        data.clean_data2 = clean_data2
 
         return render_template("clean.html", tables=[clean_data2.to_html(classes='empTable display dataTable table-review')], titles=clean_data2.columns.values)
-        # return render_template("clean.html")
-
     else:
         return redirect(url_for("index"))
 
@@ -179,15 +178,11 @@ def clustering():
 
         vector_data = vectorizer.fit_transform(clustering_data['clean_text'])
         tfidf_data = tfidf_transformer.fit_transform(vector_data)
-        # vector_data.shape
 
         kmeans = KMeans(n_clusters=4, random_state=0).fit(tfidf_data)
         result = kmeans.labels_
-        # len(result)
 
-        clustering_data['Cluster'] = result
-        # clean_data2.head()
-
+        clustering_data['cluster'] = result
 
         return render_template("clustering.html", tables=[clustering_data.to_html(classes='empTable display dataTable table-review')], titles=clustering_data.columns.values)
     else:
