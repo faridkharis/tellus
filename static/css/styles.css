@@ -203,6 +203,10 @@ img {
   margin-top: 5rem;
 }
 
+.nav__logout:hover {
+  color: red;
+}
+
 
 
 /* ========== MEDIA QUERIES ==========*/
@@ -279,7 +283,6 @@ img {
     opacity: 1;
   }
 }
-
 
 
 .home__title {
@@ -378,10 +381,13 @@ img {
 table {
   border: none;
   font-size: var(--smaller-font-size);
-  white-space: nowrap;
+  /* white-space: nowrap; */
   overflow: hidden;
   text-overflow: ellipsis;
   /* table-layout: fixed; */
   width: 50px;
 }
 
+.wordcloud {
+  width: 300px;
+}

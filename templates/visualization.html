@@ -1,0 +1,31 @@
+{% extends "main_layout.html" %}
+{% block content %}
+
+<div>
+    <div class="top__content">
+        <span class="">Visualisasi</span>
+    </div>
+
+    <div class="main__content">
+        <div class="main__content-content">
+            <h3>Visualisasi Data</h3> 
+            <br>
+            
+            <!-- {{ visualization_data }} -->
+            <img src="static/files/wordcloud.jpg" class="wordcloud">
+
+            <br><br>
+
+            <!-- <div class="">
+                <a href="{{ url_for('scraping') }}" class="button" style="float: left;">Sebelumnya</a>
+                <a href="{{ url_for('clustering') }}" class="button" style="float: right;">Selanjutnya</a>
+            </div> -->
+            
+            <canvas id="myChart" width="400" height="400"></canvas>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -13,7 +13,7 @@ from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.cluster import KMeans
-# from wordcloud import WordCloud, STOPWORDS
+from wordcloud import WordCloud, STOPWORDS
 
 
 app = Flask(__name__)
@@ -22,6 +22,8 @@ app.config['SECRET_KEY'] = 'supersecretkey'
 class DataStore():
     df = None
     clean_data2 = None
+    clustering_data = None
+    stops = None
 
 data = DataStore()
 
@@ -60,11 +62,15 @@ def scraping():
             )
 
             df = pd.DataFrame(result)
-            df = df[['userName', 'at', 'content', 'score', 'reviewCreatedVersion']]
+            df['Nama Pengguna'] = df['userName']
+            df['Waktu'] = df['at']
+            df['Ulasan'] = df['content']
+            df = df[['Nama Pengguna', 'Waktu', 'Ulasan']]
+            
 
             data.df = df
 
-            return render_template("review.html", tables=[df.to_html(classes='empTable display dataTable table-review')], titles=df.columns.values)
+            return render_template("review.html", tables=[df.to_html(classes='empTable display dataTable table-review')], titles=['na'])
         else:
             return render_template("scraping.html") 
     else:
@@ -110,6 +116,7 @@ def clean():
         stops = set([t.strip() for t in Docs[0]])
         for x in ['aplikasi', 'kulina', 'makan', 'makanan', 'menu']:
             stops.add(x)
+        data.stops = stops
 
         def formaldanstop(t):
             t = word_tokenize(t)
@@ -118,7 +125,7 @@ def clean():
                     t[i] = SlangS[x]
             return ''.join(' '.join(x for x in t if x not in stops))
 
-        reviews = [x for x in df['content']]
+        reviews = [x for x in df['Ulasan']]
 
         reviews_preprocessing1 = []
         for x in reviews:
@@ -148,22 +155,18 @@ def clean():
         for i, term in enumerate(reviews_preprocessing2):
             stop = stopword.remove(term)
             stem = stemmer.stem(stop)
-            print('kalimat ke:', i+1, 'dari', len(reviews_preprocessing2))
             clean_reviews.append(stem)
         
-        clean_data1 = pd.DataFrame(clean_reviews, columns=['clean_text'])
+        clean_data1 = pd.DataFrame(clean_reviews, columns=['Ulasan Bersih'])
 
-        clean_data1['userName'] = df['userName']
-        clean_data1['at'] = df['at']
-        clean_data1['score'] = df['score']
-        clean_data1['reviewCreatedVersion'] = df['reviewCreatedVersion']
+        clean_data1['Nama Pengguna'] = df['Nama Pengguna']
+        clean_data1['Waktu'] = df['Waktu']
         
         clean_data2 = clean_data1.dropna()
-        # print(clean_data2.shape)
 
         data.clean_data2 = clean_data2
 
-        return render_template("clean.html", tables=[clean_data2.to_html(classes='empTable display dataTable table-review')], titles=clean_data2.columns.values)
+        return render_template("clean.html", tables=[clean_data2.to_html(classes='empTable display dataTable table-review')], titles=['na'])
     else:
         return redirect(url_for("index"))
 
@@ -176,15 +179,54 @@ def clustering():
         vectorizer = CountVectorizer()
         tfidf_transformer = TfidfTransformer()
 
-        vector_data = vectorizer.fit_transform(clustering_data['clean_text'])
+        vector_data = vectorizer.fit_transform(clustering_data['Ulasan Bersih'])
         tfidf_data = tfidf_transformer.fit_transform(vector_data)
 
         kmeans = KMeans(n_clusters=4, random_state=0).fit(tfidf_data)
         result = kmeans.labels_
 
-        clustering_data['cluster'] = result
+        clustering_data['Klaster'] = result
+        data.clustering_data = clustering_data
 
-        return render_template("clustering.html", tables=[clustering_data.to_html(classes='empTable display dataTable table-review')], titles=clustering_data.columns.values)
+        return render_template("clustering.html", tables=[clustering_data.to_html(classes='empTable display dataTable table-review')], titles=['na'])
+    else:
+        return redirect(url_for("index"))
+
+@app.route("/visualization")
+def visualization():
+    if "username" in session:
+        visualization_data = data.clustering_data
+        stops = data.stops
+
+        cluster_0 = visualization_data[visualization_data.Klaster==0]
+        cluster_1 = visualization_data[visualization_data.Klaster==1]
+        cluster_2 = visualization_data[visualization_data.Klaster==2]
+        cluster_3 = visualization_data[visualization_data.Klaster==3]
+
+        comment_words = ''
+        stopwords = set(stops)
+
+        for val in cluster_1['Ulasan Bersih']:
+            # typcaste each val to string
+            val = str(val)
+            # split the value
+            tokens = val.split()
+            # covert each token into lowercase
+            for i in range(len(tokens)):
+                tokens[i] = tokens[i].lower()
+            comment_words += " ".join(tokens)+" "
+        
+        wordcloud = WordCloud(width = 400, height = 400,
+                            background_color = 'white', stopwords = stopwords,
+                            min_font_size = 10).generate(comment_words)
+        # plot the WordCloud image
+        plt.figure(figsize = (4, 4), facecolor = None)
+        plt.imshow(wordcloud)
+        plt.axis('off')
+        plt.tight_layout(pad = 0)
+        plt.savefig('static/files/wordcloud.jpg')
+
+        return render_template("visualization.html")
     else:
         return redirect(url_for("index"))
 
@@ -195,7 +237,6 @@ def logout():
         return redirect(url_for("index"))
     else:
         return redirect(url_for("index"))
-
 
 if __name__ == "__main__":
     app.run(debug=True)
