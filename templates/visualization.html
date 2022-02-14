@@ -10,10 +10,68 @@
         <div class="main__content-content">
             <h3>Visualisasi Data</h3> 
             <br>
+            <table class="table-visualization">
+                <tbody>
+                    <tr>
+                        <td>Nama Aplikasi</td>
+                        <td>:</td>
+                        <td><b>{{ visualization_title }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>ID APlikasi</td>
+                        <td>:</td>
+                        <td><b>{{ visualization_id }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>URL</td>
+                        <td>:</td>
+                        <td><b></b></td>
+                    </tr>
+                    <tr>
+                        <td>Jumlah Ulasan</td>
+                        <td>:</td>
+                        <td><b></b></td>
+                    </tr>
+                    <tr>
+                        <td>Skor</td>
+                        <td>:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><img src="static/files/score_pie.jpg" alt="" class="wordcloud-img"></td>
+                    </tr>
+                    <tr>
+                        <td>Hasil Klasterisasi</td>
+                        <td>:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><img src="static/files/cluster_pie.jpg" alt="" class="wordcloud-img"></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <br>
             
             <!-- {{ visualization_data }} -->
-            <img src="static/files/wordcloud.jpg" class="wordcloud">
-
+            <div class="wordcloud">
+                <div class="wordcloud-content">
+                    <p>Klaster 0</p>
+                    <img src="static/files/wordcloud_0.jpg" class="wordcloud-img">
+                </div>
+                <div class="wordcloud-content">
+                    <p>Klaster 1</p>
+                    <img src="static/files/wordcloud_1.jpg" class="wordcloud-img">
+                </div>
+                <div class="wordcloud-content">
+                    <p>Klaster 2</p>
+                    <img src="static/files/wordcloud_2.jpg" class="wordcloud-img">
+                </div>
+                <div class="wordcloud-content">
+                    <p>Klaster 3</p>
+                    <img src="static/files/wordcloud_3.jpg" class="wordcloud-img">
+                </div>
+            </div>
             <br><br>
 
             <!-- <div class="">
@@ -21,9 +79,14 @@
                 <a href="{{ url_for('clustering') }}" class="button" style="float: right;">Selanjutnya</a>
             </div> -->
             
-            <canvas id="myChart" width="400" height="400"></canvas>
+            <!-- <canvas id="myChart" width="400" height="400"></canvas> -->
+            <br><br>
 
-
+            <a href="#" class="button-download">
+                <i class='bx bxs-download' ></i>
+                <span class="">Unduh File (.pdf)</span>
+            </a>
+            <br><br>
         </div>
     </div>
 </div>

@@ -16,12 +16,20 @@
                 {{ table|safe }}
             {% endfor %}
 
-            <br><br>
+            <a href="#" class="button-download">
+                <i class='bx bxs-download' ></i>
+                <span class="">Unduh File (.csv)</span>
+            </a>
+            
+            <br><br><br><br>
 
             <div class="">
                 <a href="{{ url_for('scraping') }}" class="button" style="float: left;">Sebelumnya</a>
                 <a href="{{ url_for('visualization') }}" class="button" style="float: right;">Selanjutnya</a>
             </div>
+            <br><br>
+            <span class="text-instruction">Klik "Selanjutnya" untuk menuju ke halaman visualisasi hasil dari proses <i>Text Clustering</i> 
+                atau klik "Sebelumnya" untuk kembali ke halaman <i>Scraping</i></span>
             
         </div>
     </div>

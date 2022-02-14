@@ -374,9 +374,16 @@ img {
   display: block;
 }
 
-.teble-review {
-  border: none;
+.button-download {
+  font-size: var(--small-font-size);
+  color: var(--first-color);
+  cursor: pointer;
+  font-family: var(--body-font);
+  margin-top: 1rem;
+  display: block;
+  float: right;
 }
+
 
 table {
   border: none;
@@ -388,6 +395,25 @@ table {
   width: 50px;
 }
 
+.table-visualization {
+  font-size: var(--normal-font-size);
+  white-space: nowrap;
+  height: 200px;
+  min-width: 500px;
+}
 .wordcloud {
-  width: 300px;
+  display: flex;
+}
+
+.wordcloud-content {
+  margin: 10px;
+  text-align: center;
+}
+.wordcloud-img {
+  width: 250px;
+  filter: drop-shadow(0 0 .2rem #a09fa3);
+}
+
+.text-instruction {
+  font-size: var(--small-font-size);
 }

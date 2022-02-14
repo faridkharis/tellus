@@ -25,6 +25,7 @@ apabila
 apakah
 apalagi
 apatah
+aplikasi
 artinya
 asal
 asalkan
@@ -44,10 +45,10 @@ bagian
 bahkan
 bahwa
 bahwasanya
-baik
 bakal
 bakalan
 balik
+banget
 banyak
 bapak
 baru
@@ -61,7 +62,6 @@ begitu
 begitukah
 begitulah
 begitupun
-bekerja
 belakang
 belakangan
 belum
@@ -117,7 +117,6 @@ biasa
 biasanya
 bila
 bilakah
-bisa
 bisakah
 boleh
 bolehkah
@@ -142,6 +141,7 @@ dapat
 dari
 daripada
 datang
+deh
 dekat
 demi
 demikian
@@ -759,3 +759,6 @@ yaitu
 yakin
 yakni
 yang
+kulina
+bobobox
+ipiring

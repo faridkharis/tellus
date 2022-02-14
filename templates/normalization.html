@@ -7,10 +7,13 @@
     </div>
     <div class="main__content">
         <div class="main__content-content">
-            <h3>Data Ulasan</h3> 
+            <h3>Data Normalisasi</h3> 
             <br>
             
-            {{ slang_word }}
+            {% for table in tables %}
+                {{ titles[loop.index ]}}
+                {{ table|safe }}
+            {% endfor %}
 
             <br><br>
 

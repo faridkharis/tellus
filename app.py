@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, request, flash, session
+from flask import Flask, make_response, render_template, url_for, redirect, request, flash, session, send_file
 import pandas as pd
 import numpy as np
 from google_play_scraper import app, Sort, reviews_all
@@ -24,6 +24,8 @@ class DataStore():
     clean_data2 = None
     clustering_data = None
     stops = None
+    visualization_title = None
+    visualization_id = None
 
 data = DataStore()
 
@@ -32,6 +34,7 @@ data = DataStore()
 def index():
     if "username" in session:
         return redirect(url_for("home"))
+    # ================ LOGIN VALIDATION ================
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -49,25 +52,31 @@ def home():
 @app.route("/scraping", methods=["POST", "GET"])
 def scraping():
     if "username" in session:
+        # ================ SCRAPING DATA ================
         if request.method == 'POST':
             id_url = request.form['id_url']
 
             result = reviews_all(
-                app_id = id_url,
+                app_id=id_url,
                 sleep_milliseconds=0,
                 lang='id',
                 country='id', 
                 sort=Sort.MOST_RELEVANT,
-                count=50,
             )
 
+            data.visualization_id = id_url
+
             df = pd.DataFrame(result)
+
+            hist = pd.value_counts(df['score'])
+            fig = hist.plot(kind='bar', figsize=(4, 4)).get_figure()
+            fig.savefig('static/files/score_pie.jpg')
+            
             df['Nama Pengguna'] = df['userName']
             df['Waktu'] = df['at']
             df['Ulasan'] = df['content']
             df = df[['Nama Pengguna', 'Waktu', 'Ulasan']]
             
-
             data.df = df
 
             return render_template("review.html", tables=[df.to_html(classes='empTable display dataTable table-review')], titles=['na'])
@@ -84,19 +93,39 @@ def review():
     else:
         return redirect(url_for("index"))
 
+@app.route("/download")
+def download():
+    if "username" in session:
+        df = data.df
+        resp = make_response(df.to_csv())
+        resp.headers["Content-Disposition"] = "attachment; filename=data.csv"
+        resp.headers["Content-Type"] = "text/csv"
+        return resp
+    else:
+        return redirect(url_for("index"))
+
 @app.route("/stopword")
 def stopword():
     if "username" in session:
-        with open('static/files/stop_word.txt', 'r') as f:
-            return render_template("stopword.html", text=f.read())
+        df_stopword = pd.read_csv('static/files/stop_word.txt')
+        
+        df_stopword['Stopword'] = df_stopword['ada']
+        df_stopword = df_stopword[['Stopword']]
+        
+        return render_template("stopword.html", tables=[df_stopword.to_html(classes='empTable display dataTable table-review')], titles=[''])
     else:
         return redirect(url_for("index"))
 
 @app.route("/normalization")
 def normalization():
     if "username" in session:
-        with open('static/files/slang_word.csv', 'r') as f:
-            return render_template("normalization.html", slang_word=f.read())
+        df_normalization = pd.read_csv('static/files/slang_word.csv')
+        
+        df_normalization['Kata Slang'] = df_normalization['aj']
+        df_normalization['Normalisasi'] = df_normalization['saja']
+        df_normalization = df_normalization[['Kata Slang', 'Normalisasi']]
+        
+        return render_template("normalization.html", tables=[df_normalization.to_html(classes='empTable display dataTable table-review')], titles=[''])
     else:
         return redirect(url_for("index"))
 
@@ -104,12 +133,13 @@ def normalization():
 def clean():
     if "username" in session:
         df = data.df
-
+        # ================ NORMALIZATION ================
         fSlang = 'static/files/slang_word.csv'
-        bahasa = 'id'
+        # bahasa = 'id'
         sw = open(fSlang,encoding='utf-8', errors='ignore', mode='r'); SlangS=sw.readlines(); sw.close()
         SlangS = {slang.strip().split(',')[0]:slang.strip().split(',')[1] for slang in SlangS}
 
+        # ================ STOPWORD REMOVAL ================
         Docs = []
         st = open('static/files/stop_word.txt', "r", encoding="utf-8", errors='replace')
         Docs.append(st.readlines()); st.close()
@@ -118,6 +148,7 @@ def clean():
             stops.add(x)
         data.stops = stops
 
+        # ================ TOKENIZATION ================
         def formaldanstop(t):
             t = word_tokenize(t)
             for i,x in enumerate(t):
@@ -147,6 +178,7 @@ def clean():
 
         reviews_preprocessing2 = list(map(formaldanstop,reviews_preprocessing1))
 
+        # ================ STEMMING ================
         stopword = StopWordRemoverFactory().create_stop_word_remover()
         stemmer = StemmerFactory().create_stemmer()
 
@@ -176,16 +208,19 @@ def clustering():
 
         clustering_data = data.clean_data2
 
+        # ================ TF-IDF ================
         vectorizer = CountVectorizer()
         tfidf_transformer = TfidfTransformer()
 
         vector_data = vectorizer.fit_transform(clustering_data['Ulasan Bersih'])
         tfidf_data = tfidf_transformer.fit_transform(vector_data)
 
+        # ================ K-MEANS CLUSTERING ================
         kmeans = KMeans(n_clusters=4, random_state=0).fit(tfidf_data)
-        result = kmeans.labels_
+        kmeans_result = kmeans.labels_
 
-        clustering_data['Klaster'] = result
+        clustering_data['Klaster'] = kmeans_result
+
         data.clustering_data = clustering_data
 
         return render_template("clustering.html", tables=[clustering_data.to_html(classes='empTable display dataTable table-review')], titles=['na'])
@@ -197,11 +232,41 @@ def visualization():
     if "username" in session:
         visualization_data = data.clustering_data
         stops = data.stops
+        visualization_id = data.visualization_id
 
+        hist_2 = pd.value_counts(visualization_data['Klaster'])
+        fig_2 = hist_2.plot(kind='pie').get_figure()
+        fig_2.savefig('static/files/cluster_pie.jpg')
+
+        # ================ WORDCLOUD ================
         cluster_0 = visualization_data[visualization_data.Klaster==0]
         cluster_1 = visualization_data[visualization_data.Klaster==1]
         cluster_2 = visualization_data[visualization_data.Klaster==2]
         cluster_3 = visualization_data[visualization_data.Klaster==3]
+
+        comment_words = ''
+        stopwords = set(stops)
+
+        for val in cluster_0['Ulasan Bersih']:
+            # typcaste each val to string
+            val = str(val)
+            # split the value
+            tokens = val.split()
+            # covert each token into lowercase
+            for i in range(len(tokens)):
+                tokens[i] = tokens[i].lower()
+            comment_words += " ".join(tokens)+" "
+        
+        wordcloud = WordCloud(width = 400, height = 400,
+                            background_color = 'white', stopwords = stopwords,
+                            min_font_size = 10).generate(comment_words)
+        # plot the WordCloud image
+        plt.figure(figsize = (4, 4), facecolor = None)
+        plt.imshow(wordcloud)
+        plt.axis('off')
+        plt.tight_layout(pad = 0)
+        plt.savefig('static/files/wordcloud_0.jpg')
+
 
         comment_words = ''
         stopwords = set(stops)
@@ -224,9 +289,57 @@ def visualization():
         plt.imshow(wordcloud)
         plt.axis('off')
         plt.tight_layout(pad = 0)
-        plt.savefig('static/files/wordcloud.jpg')
+        plt.savefig('static/files/wordcloud_1.jpg')
 
-        return render_template("visualization.html")
+
+        comment_words = ''
+        stopwords = set(stops)
+
+        for val in cluster_2['Ulasan Bersih']:
+            # typcaste each val to string
+            val = str(val)
+            # split the value
+            tokens = val.split()
+            # covert each token into lowercase
+            for i in range(len(tokens)):
+                tokens[i] = tokens[i].lower()
+            comment_words += " ".join(tokens)+" "
+        
+        wordcloud = WordCloud(width = 400, height = 400,
+                            background_color = 'white', stopwords = stopwords,
+                            min_font_size = 10).generate(comment_words)
+        # plot the WordCloud image
+        plt.figure(figsize = (4, 4), facecolor = None)
+        plt.imshow(wordcloud)
+        plt.axis('off')
+        plt.tight_layout(pad = 0)
+        plt.savefig('static/files/wordcloud_2.jpg')
+
+
+        comment_words = ''
+        stopwords = set(stops)
+
+        for val in cluster_3['Ulasan Bersih']:
+            # typcaste each val to string
+            val = str(val)
+            # split the value
+            tokens = val.split()
+            # covert each token into lowercase
+            for i in range(len(tokens)):
+                tokens[i] = tokens[i].lower()
+            comment_words += " ".join(tokens)+" "
+        
+        wordcloud = WordCloud(width = 400, height = 400,
+                            background_color = 'white', stopwords = stopwords,
+                            min_font_size = 10).generate(comment_words)
+        # plot the WordCloud image
+        plt.figure(figsize = (4, 4), facecolor = None)
+        plt.imshow(wordcloud)
+        plt.axis('off')
+        plt.tight_layout(pad = 0)
+        plt.savefig('static/files/wordcloud_3.jpg')
+
+        return render_template("visualization.html", visualization_id=visualization_id)
     else:
         return redirect(url_for("index"))
 

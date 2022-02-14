@@ -10,7 +10,10 @@
             <h3>Data Stopword</h3> 
             <br>
             
-            {{ text }}
+            {% for table in tables %}
+                {{ titles[loop.index ]}}
+                {{ table|safe }}
+            {% endfor %}
 
             <br><br>
 
